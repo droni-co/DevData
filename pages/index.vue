@@ -1,8 +1,9 @@
 <template>
-  <pre>{{ data }}</pre>
+  <div>
+    <h1>Home</h1>
+  </div>
 </template>
 
 <script setup lang="ts">
-const { data } = await useFetch('/api/devops/repos', { method: 'POST' })
 </script>
 
