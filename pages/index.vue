@@ -1,5 +1,5 @@
 <template>
-  <pre>{{ data.length }}</pre>
+  <pre>{{ data }}</pre>
 </template>
 
 <script setup lang="ts">
