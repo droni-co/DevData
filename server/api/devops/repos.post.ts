@@ -1,5 +1,5 @@
 import { AzureApiService } from "../../../services/AzureDev.service";
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 export default defineEventHandler(async (event) => {
   const gitApi = await (await AzureApiService.connection()).getGitApi()
