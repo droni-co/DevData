@@ -17,12 +17,18 @@
         </li>
       </ul>
     </UiCard>
+    <UiCard class="col-span-2 md:col-span-2">
+      <h4 class="font-bold text-slate-700 text-xl">Repositorios por tipo</h4>
+      <ClientOnly fallback-tag="span" fallback="Loading diagram...">
+        <BarChart :chartData="reposByProjectChart" :options="{ indexAxis: 'y' }" />
+      </ClientOnly>
+    </UiCard>
   </div>
 </template>
 
 <script setup lang="ts">
 
-import { DoughnutChart } from 'vue-chart-3';
+import { DoughnutChart, BarChart } from 'vue-chart-3';
 
 const reposByType = await $fetch('/api/db/reports/repos-by-type')
 const reposByTypeChart = {
@@ -33,6 +39,20 @@ const reposByTypeChart = {
       backgroundColor: ['#77CEFF', '#0079AF', '#003D4C'],
     },
   ],
+};
+
+const reposByProject = await $fetch('/api/db/reports/repos-by-project')
+const labels = reposByProject.map((repo) => repo.project);
+
+const reposByProjectChart = {
+  labels: reposByProject.map((repo) => repo.project),
+  datasets: [
+    {
+      label: 'Repositorios por proyecto',
+      data: reposByProject.map((repo) => repo.count),
+      backgroundColor: ['#77CEFF', '#0079AF', '#003D4C', '#77C3FF', '#0070AF', '#00354C'],
+    }
+  ]
 };
 
 
