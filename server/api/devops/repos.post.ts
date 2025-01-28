@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         size: repo.size,
         defaultBranch: repo.defaultBranch,
         isApi: String(repo.name).toLowerCase().includes("api"),
-        isExp: String(repo.name).toLowerCase().includes("-exp")
+        isExp: String(repo.name).toLowerCase().includes("-expe") || String(repo.name).toLowerCase().includes("-exp-")
       },
       create: {
         id: repo.id,
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
         size: repo.size,
         defaultBranch: repo.defaultBranch,
         isApi: String(repo.name).toLowerCase().includes("api"),
-        isExp: String(repo.name).toLowerCase().includes("-exp")
+        isExp: String(repo.name).toLowerCase().includes("-expe") || String(repo.name).toLowerCase().includes("-exp-")
       }
     })    
   }
