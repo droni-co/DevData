@@ -24,10 +24,10 @@
           class="block mt-4 lg:inline-block lg:mt-0 hover:text-white px-4 py-2 rounded hover:bg-blue-700 mr-2">
           Repositorios
         </NuxtLink>
-        <a href="#responsive-header"
+        <NuxtLink to="/records"
           class=" block mt-4 lg:inline-block lg:mt-0 hover:text-white px-4 py-2 rounded hover:bg-blue-700 mr-2">
           Registros
-        </a>
+        </NuxtLink>
       </div>
       <!-- This is an example component -->
       <div class="relative mx-auto text-gray-600 lg:block hidden">
