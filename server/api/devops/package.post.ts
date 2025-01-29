@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const { id } = await readBody(event)
   
   const gitApi = await (await AzureApiService.connection()).getGitApi()
-  const packageJson = (await gitApi.getItemContent(id, 'package.json')).read().toString()
+  const packageJson = await (await gitApi.getItemContent(id, 'package.json')).read().toString()
 
   const prisma = new PrismaClient()
   const repo = await prisma.repo.update({

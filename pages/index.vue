@@ -42,10 +42,10 @@ const reposByTypeChart = {
 };
 
 const reposByProject = await $fetch('/api/db/reports/repos-by-project')
-const labels = reposByProject.map((repo) => repo.project);
+const labels = reposByProject.map((repo) => repo.projectName);
 
 const reposByProjectChart = {
-  labels: reposByProject.map((repo) => repo.project),
+  labels: reposByProject.map((repo) => repo.projectName),
   datasets: [
     {
       label: 'Repositorios por proyecto',

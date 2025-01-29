@@ -12,19 +12,21 @@ export default defineEventHandler(async (event) => {
     const result = await prisma.repo.upsert({
       where: { id: repo.id },
       update: {
-        name: repo.name,
+        name: String(repo.name),
         url: repo.webUrl,
-        project: repo.project!.name,
+        projectId: repo.project!.id,
+        projectName: repo.project!.name,
         size: repo.size,
         defaultBranch: repo.defaultBranch,
         isApi: String(repo.name).toLowerCase().includes("api"),
         isExp: String(repo.name).toLowerCase().includes("-expe") || String(repo.name).toLowerCase().includes("-exp-")
       },
       create: {
-        id: repo.id,
-        name: repo.name,
+        id: String(repo.id),
+        name: String(repo.name),
         url: repo.webUrl,
-        project: repo.project!.name,
+        projectId: repo.project!.id,
+        projectName: repo.project!.name,
         size: repo.size,
         defaultBranch: repo.defaultBranch,
         isApi: String(repo.name).toLowerCase().includes("api"),

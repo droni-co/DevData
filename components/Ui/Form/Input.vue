@@ -9,7 +9,8 @@
       focus:ring-blue-500
       focus:border-blue-500
       block
-      w-full"
+      w-full
+      rounded-full"
     :placeholder="placeholder"
     :class="{'border-red-500': error.length > 0, 'p-1 text-sm': size === 's', 'p-2': size === 'm', 'p-5': size === 'l'}"
     :required="required"

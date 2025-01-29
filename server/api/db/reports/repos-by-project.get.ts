@@ -8,9 +8,9 @@ export default defineEventHandler(async (event) => {
     where: {
       isApi: true
     },
-    by: ['project'],
+    by: ['projectId', 'projectName'],
     _count: {
-      id: 1
+      id: true
     },
     orderBy: {
       _count: {
@@ -23,7 +23,8 @@ export default defineEventHandler(async (event) => {
 
   for (const repo of repos) {
     result.push({
-      project: repo.project,
+      projectId: repo.projectId,
+      projectName: repo.projectName,
       count: repo._count.id
     })
   }

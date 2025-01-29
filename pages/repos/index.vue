@@ -4,15 +4,12 @@
     Fetch Repos
   </button>
   <UiFormInput v-model="filters.search" placeholder="Nombre" />
-  <UiFormInput v-model="filters.project" placeholder="Proyecto" datalist="listProjects" />
-  <datalist id="listProjects">
-    <option v-for="project in projectList" :value="project" />
-  </datalist>
+  <UiFormSelect v-model="filters.projectId" :options="projectList" label="projectName" id="projectId" />
   <UiFormInput v-model="filters.package" placeholder="package" />
   <UiTable
       :headers="[
         { label: 'Name', name: 'name' },
-        { label: 'Project', name: 'project' },
+        { label: 'Project', name: 'projectName' },
         { label: 'Branch', name: 'defaultBranch' },
         { label: 'Size', name: 'size' },
         { label: 'Is Api', name: 'isApi' },
@@ -22,18 +19,18 @@
       ]"
       :data="repos ?? []"
       >
-    <template #name="item">
+    <template #name="item: any">
       <strong class="block">{{ item.name }}</strong>
       <a :href="item.url" target="_blank" class="text-xs text-slate-500">
         {{ item.url }}
       </a>
     </template>
-    <template #package="item">
+    <template #package="item: any">
       <UiModal v-if="item.package" label='ver'>
         <pre class="bg-gray-100 p-2 rounded-lg">{{ item.package }}</pre>
       </UiModal>
     </template>
-    <template #actions="item">
+    <template #actions="item: any">
       <button class="text-blue-700 hover:text-blue-900" @click="getPackageJson(item.id)">
         <i class="mdi mdi-code-block-braces"></i>
       </button>
@@ -41,25 +38,27 @@
   </UiTable>
 </template>
 <script setup lang="ts">
-const repos = ref([])
+const repos = ref<any>([])
 const filters = ref({
   search: '',
-  project: '',
+  projectId: '',
   package: '',
-  isExp: true
+  isExp: 'true'
 })
-const projectList = ref([])
+const projectList = ref<any>([])
+
+const getProjects = async () => {
+  const data = await $fetch('/api/db/repos/projects')
+  projectList.value = data
+}
 
 const getRepos = async () => {
-  const queryParam = Object.keys(filters.value)
-    .map(key => `${key}=${filters.value[key]}`)
-    .join('&')
+  const queryParam = new URLSearchParams(filters.value).toString()
   const data = await $fetch('/api/db/repos?' + queryParam)
-  projectList.value = data.map((item: any) => item.project)
-  projectList.value = [...new Set(projectList.value)]
   repos.value = data
 }
 getRepos()
+getProjects()
 
 const fetchRepos = async () => {
   repos.value = []
