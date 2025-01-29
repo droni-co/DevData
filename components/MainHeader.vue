@@ -18,21 +18,21 @@
       <div class="text-md font-bold text-blue-700 lg:flex-grow">
         <NuxtLink to="/"
           class="block mt-4 lg:inline-block lg:mt-0 hover:text-white px-4 py-2 rounded hover:bg-blue-700 mr-2">
-          Dashboard
+          Tablero
         </NuxtLink>
         <NuxtLink to="/repos"
           class="block mt-4 lg:inline-block lg:mt-0 hover:text-white px-4 py-2 rounded hover:bg-blue-700 mr-2">
-          Repositories
+          Repositorios
         </NuxtLink>
         <a href="#responsive-header"
           class=" block mt-4 lg:inline-block lg:mt-0 hover:text-white px-4 py-2 rounded hover:bg-blue-700 mr-2">
-          Log analytics
+          Registros
         </a>
       </div>
       <!-- This is an example component -->
       <div class="relative mx-auto text-gray-600 lg:block hidden">
         <input class="border-2 border-gray-300 bg-white h-10 pl-2 pr-8 rounded-lg text-sm focus:outline-none"
-          type="search" name="search" placeholder="Search">
+          type="search" name="search" placeholder="Buscar...">
         <button type="submit" class="absolute right-0 top-0 mt-2 mr-2">
           <i class="mdi mdi-magnify"></i>
         </button>

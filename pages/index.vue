@@ -18,7 +18,7 @@
       </ul>
     </UiCard>
     <UiCard class="col-span-2 md:col-span-2">
-      <h4 class="font-bold text-slate-700 text-xl">Repositorios por tipo</h4>
+      <h4 class="font-bold text-slate-700 text-xl">Repositorios por proyecto</h4>
       <ClientOnly fallback-tag="span" fallback="Loading diagram...">
         <BarChart :chartData="reposByProjectChart" :options="{ indexAxis: 'y' }" />
       </ClientOnly>
