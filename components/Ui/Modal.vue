@@ -10,7 +10,7 @@
           <i class="mdi mdi-close"></i>
         </button>
       </div>
-      <div class="max-h-[80vh] overflow-auto p-4">
+      <div class="max-h-[80vh] max-w-[80vw] overflow-auto p-4">
         <slot />
       </div>
     </div>

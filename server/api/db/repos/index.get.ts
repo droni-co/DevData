@@ -4,7 +4,11 @@ export default defineEventHandler(async (event) => {
 
   const prisma = new PrismaClient()
 
-  const repos = await prisma.repo.findMany()
+  const repos = await prisma.repo.findMany({
+    where: {
+      isApi: true
+    }
+  })
 
   return repos
 })
