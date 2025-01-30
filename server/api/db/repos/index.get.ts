@@ -7,6 +7,9 @@ export default defineEventHandler(async (event) => {
   const repos = await prisma.repo.findMany({
     where: {
       isApi: true
+    },
+    orderBy: {
+      updatedAt: 'desc'
     }
   })
 

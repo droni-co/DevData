@@ -14,7 +14,9 @@
         { label: 'Size', name: 'size' },
         { label: 'Is Api', name: 'isApi' },
         { label: 'Is Exp', name: 'isExp' },
-        { label: 'package.json', name: 'package' },
+        { label: 'package', name: 'package' },
+        { label: 'pipeline', name: 'pipeline' },
+        { label: 'appService', name: 'appService' },
         { label: 'Actions', name: 'actions', classes: 'w-12'}
       ]"
       :data="repos ?? []"
@@ -29,10 +31,16 @@
       <UiModal v-if="item.package" label='ver'>
         <pre class="bg-gray-100 p-2 rounded-lg">{{ item.package }}</pre>
       </UiModal>
+      <button v-else class="text-blue-700 hover:text-blue-900" @click="getPackageJson(item.id)">
+        <i class="mdi mdi-download-box-outline text-2xl"></i>
+      </button>
     </template>
-    <template #actions="item: any">
-      <button class="text-blue-700 hover:text-blue-900" @click="getPackageJson(item.id)">
-        <i class="mdi mdi-code-block-braces"></i>
+    <template #pipeline="item: any">
+      <UiModal v-if="item.pipeline" label='ver'>
+        <pre class="bg-gray-100 p-2 rounded-lg block">{{ item.pipeline }}</pre>
+      </UiModal>
+      <button v-else class="text-blue-700 hover:text-blue-900" @click="getPipeline(item.id)">
+        <i class="mdi mdi-download-box-outline text-2xl"></i>
       </button>
     </template>
   </UiTable>
@@ -67,11 +75,19 @@ const fetchRepos = async () => {
 }
 
 const getPackageJson = async (id: string) => {
-  const data = await $fetch(`/api/devops/package`, { 
+  await $fetch(`/api/devops/package`, { 
     method: 'POST',
     body: { id }
   })
   getRepos()
 }
+const getPipeline = async (id: string) => {
+  await $fetch(`/api/devops/pipeline`, { 
+    method: 'POST',
+    body: { id }
+  })
+  getRepos()
+}
+
 
 </script>
