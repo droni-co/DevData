@@ -1,7 +1,7 @@
 import { AzureQueryService } from "../../../services/AzureQuery.service";
 
 export default defineEventHandler(async (event) => {
-  const { fromDate, toDate, report } = await readBody(event) as { fromDate: string, toDate: string, report: keyof typeof querys }
+  const { fromDate, toDate, report, description } = await readBody(event) as { fromDate: string, toDate: string, report: keyof typeof querys, description: string }
 
   const querys: { [key: string]: string } = {
     errorsByDescription: `AppServiceConsoleLogs
@@ -40,6 +40,13 @@ export default defineEventHandler(async (event) => {
     `,
     errorsByResource: `AppServiceConsoleLogs
       | where Level == "Error"
+      | summarize Count=count() by _ResourceId
+      | project _ResourceId, Count
+      | sort by Count desc
+    `,
+    resourceByError: `AppServiceConsoleLogs
+      | where Level == "Error"
+      | where ResultDescription contains "${description}"
       | summarize Count=count() by _ResourceId
       | project _ResourceId, Count
       | sort by Count desc

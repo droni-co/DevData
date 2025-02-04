@@ -3,14 +3,16 @@
     <div class="flex">
       <h1 class="text-2xl font-bold grow">Logs</h1>
       <div class="flex">
+        <UiFormInput class="me-2"  v-model="filters.description" placeholder="Description" />
         <UiFormSelect class="me-2" v-model="filters.report" :options="[
           { id: 'requestByMethod', name: 'Request by Method' },
           { id: 'errorsByType', name: 'Error by Type' },
           { id: 'errorsByResource' , name: 'Error by Resource' },
-          { id: 'errorsByDescription', name: 'Error by Description' }
+          { id: 'errorsByDescription', name: 'Error by Description' },
+          { id: 'resourceByError', name: 'Resource by error' }
         ]" />
-        <UiFormInput class="me-2" type="date" v-model="filters.fromDate" placeholder="package" />
-        <UiFormInput class="me-2" type="date" v-model="filters.toDate" placeholder="package" />
+        <UiFormInput class="me-2" type="date" v-model="filters.fromDate" />
+        <UiFormInput class="me-2" type="date" v-model="filters.toDate"  />
         <button type="button" @click="fetchQuery" class="bg-white hover:bg-blue-100 text-blue-700 border-blue-700 border font-bold py-2 px-4 rounded">
           Generate
         </button>
@@ -28,7 +30,8 @@
   const filters = ref({
     fromDate: DateTime.now().plus({ days: -1 }).toISODate(),
     toDate: DateTime.now().toISODate(),
-    report: 'requestByMethod'
+    report: 'requestByMethod',
+    description: ''
   });
 
   const tableData = ref({
