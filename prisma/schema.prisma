@@ -26,3 +26,14 @@ model Repo {
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @default(now())
 }
+
+model Log {
+  id            String   @id @unique
+  logDate       DateTime
+  level         String
+  resource      String
+  appservice    String
+  description   String
+  repoId        String?
+  createdAt     DateTime @default(now())
+}
