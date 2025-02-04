@@ -11,7 +11,7 @@
       <tbody>
         <tr
           v-for="item in data"
-          class="bg-white border-b hover:bg-zinc-100">
+          class="bg-white border-b hover:bg-zinc-100 break-all">
           <td
             v-for="header in headers"
             class="px-6 py-4 text-gray-900">

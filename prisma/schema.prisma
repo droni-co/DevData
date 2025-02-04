@@ -28,7 +28,7 @@ model Repo {
 }
 
 model Log {
-  id            String   @id @unique
+  id            Int   @id @default(autoincrement())
   logDate       DateTime
   level         String
   resource      String
