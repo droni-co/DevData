@@ -39,19 +39,18 @@ export default defineEventHandler(async (event) => {
     errorsByType: `AppServiceConsoleLogs
       | where Level == "Error"
       | summarize 
-          Count500 = countif(ResultDescription contains " 500"),
-          Count501 = countif(ResultDescription contains " 501"),
-          Count502 = countif(ResultDescription contains " 502"),
-          Count503 = countif(ResultDescription contains " 503"),
-          Count504 = countif(ResultDescription contains " 504"),
-          Count505 = countif(ResultDescription contains " 505"),
-          Count400 = countif(ResultDescription contains " 400"),
-          Count401 = countif(ResultDescription contains " 401"),
-          Count402 = countif(ResultDescription contains " 402"),
-          Count403 = countif(ResultDescription contains " 403"),
-          Count404 = countif(ResultDescription contains " 404"),
-          Count405 = countif(ResultDescription contains " 405")
-      | project Count500, Count501, Count502, Count503, Count504, Count505, Count400, Count401, Count402, Count403, Count404, Count405
+          e500 = countif(ResultDescription contains " 500"),
+          e501 = countif(ResultDescription contains " 501"),
+          e502 = countif(ResultDescription contains " 502"),
+          e503 = countif(ResultDescription contains " 503"),
+          e504 = countif(ResultDescription contains " 504"),
+          e505 = countif(ResultDescription contains " 505"),
+          e400 = countif(ResultDescription contains " 400"),
+          e401 = countif(ResultDescription contains " 401"),
+          e402 = countif(ResultDescription contains " 402"),
+          e403 = countif(ResultDescription contains " 403"),
+          e404 = countif(ResultDescription contains " 404")
+      | project e500, e501, e502, e503, e504, e505, e400, e401, e402, e403, e404
     `,
     errorsByResource: `AppServiceConsoleLogs
       | where Level == "Error"

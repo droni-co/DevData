@@ -20,9 +20,11 @@
       </div>
     </div>
   </div>
-  <div class="flex">
-    <ChartsRequestByMethod class="flex-grow m-2" :filters="filters" />
-    <ChartsRequestByMethod class="flex-grow m-2" :filters="filters" />
+  <div class="grid grid-cols-5 gap-2">
+    <ChartsRequestByMethod class="col-span-2" :filters="filters" />
+    <ChartsRequestByEndpoint class="col-span-3" :filters="filters" />
+    <ChartsErrorByType class="col-span-2" :filters="filters" />
+    <ChartsErrorByResource class="col-span-3" :filters="filters" />
   </div>
   <UiTable 
     :headers="tableData.headers"
