@@ -13,13 +13,13 @@ export default defineEventHandler(async (event) => {
     requestByMethod: `AppServiceConsoleLogs
       | where ResultDescription !startswith "GET /ping"
       | summarize 
-        CountGet = countif(ResultDescription startswith "GET"),
-        CountPost = countif(ResultDescription startswith "POST"),
-        CountPut = countif(ResultDescription startswith "PUT"),
-        CountPatch = countif(ResultDescription startswith "PATCH"),
-        CountDelete = countif(ResultDescription startswith "DELETE"),
-        CountOptions = countif(ResultDescription startswith "OPTIONS")
-      | project CountGet, CountPost, CountPut, CountPatch, CountDelete, CountOptions
+        GET = countif(ResultDescription startswith "GET"),
+        POST = countif(ResultDescription startswith "POST"),
+        PUT = countif(ResultDescription startswith "PUT"),
+        PATCH = countif(ResultDescription startswith "PATCH"),
+        DELETE = countif(ResultDescription startswith "DELETE"),
+        OPTIONS = countif(ResultDescription startswith "OPTIONS")
+      | project GET, POST, PUT, PATCH, DELETE, OPTIONS
     `,
     requestByEndpoint: `AppServiceConsoleLogs
       | where ResultDescription !startswith "GET /ping"
