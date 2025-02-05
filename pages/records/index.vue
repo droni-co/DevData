@@ -9,7 +9,8 @@
           { id: 'errorsByType', name: 'Error by Type' },
           { id: 'errorsByResource' , name: 'Error by Resource' },
           { id: 'errorsByDescription', name: 'Error by Description' },
-          { id: 'resourceByError', name: 'Resource by error' }
+          { id: 'resourceByError', name: 'Resource by error' },
+          { id: 'requestByEndpoint', name: 'Requests By Endpoint' }
         ]" />
         <UiFormInput class="me-2" type="date" v-model="filters.fromDate" />
         <UiFormInput class="me-2" type="date" v-model="filters.toDate"  />
