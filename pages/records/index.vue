@@ -20,6 +20,10 @@
       </div>
     </div>
   </div>
+  <div class="flex">
+    <ChartsRequestByMethod class="flex-grow m-2" :filters="filters" />
+    <ChartsRequestByMethod class="flex-grow m-2" :filters="filters" />
+  </div>
   <UiTable 
     :headers="tableData.headers"
     :data="tableData.data">

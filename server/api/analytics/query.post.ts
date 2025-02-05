@@ -55,8 +55,9 @@ export default defineEventHandler(async (event) => {
     `,
     errorsByResource: `AppServiceConsoleLogs
       | where Level == "Error"
-      | summarize Count=count() by _ResourceId
-      | project _ResourceId, Count
+      | extend AppService = tostring(split(_ResourceId, "/")[8])
+      | summarize Count=count() by AppService
+      | project AppService, Count
       | sort by Count desc
     `,
     resourceByError: `AppServiceConsoleLogs
@@ -82,7 +83,6 @@ export default defineEventHandler(async (event) => {
     const logsClient = await AzureQueryService.logsClient()
     const workspaceId = String(process.env.WORKSPACE_ID)
     const query = querys[report] ?? ''
-console.log(query)
     const records = await logsClient.queryWorkspace(workspaceId, query, {
       startTime: new Date(Date.parse(fromDate)),
       endTime: new Date(Date.parse(toDate))
