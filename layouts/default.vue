@@ -7,7 +7,6 @@
       <p>Loading</p>
     </div>
     <div class="container mx-auto">
-      {{ loading }}
       <slot />
     </div>
   </div>

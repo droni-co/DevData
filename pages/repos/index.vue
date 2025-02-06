@@ -3,6 +3,9 @@
     <button type="button" @click="fetchRepos" class="bg-white hover:bg-blue-100 text-blue-700 border-blue-700 border font-bold py-2 px-4 rounded">
       Fetch
     </button>
+    <button type="button" @click="autoScrap" class="bg-white hover:bg-blue-100 text-blue-700 border-blue-700 border font-bold py-2 px-4 rounded">
+      AutoFiles: {{ actualScrap }}
+    </button>
     <h1 class="text-2xl font-bold grow py-2 px-2">Repositorios</h1>
     <div class="flex">
       <UiFormSelect v-model="filters.projectId" :options="projectList" itemLabel="projectName" itemValue="projectId" class="me-2" />
@@ -54,6 +57,7 @@
 </template>
 <script setup lang="ts">
 const loading = useState('loading', () => false)
+const actualScrap = ref('')
 const repos = ref<any>([])
 const filters = ref({
   projectId: '',
@@ -88,13 +92,24 @@ const getPackageJson = async (id: string) => {
     method: 'POST',
     body: { id }
   })
-  getRepos()
 }
 const getPipeline = async (id: string) => {
   await $fetch(`/api/devops/pipeline`, { 
     method: 'POST',
     body: { id }
   })
+}
+const autoScrap = async () => {
+  for(let i = 0; i < repos.value.length; i++) {
+    actualScrap.value = repos.value[i].name
+    console.log('Scraping', repos.value[i].name)
+    await getPackageJson(repos.value[i].id).catch(e => console.log(e))
+    await getPipeline(repos.value[i].id).catch(e => console.log(e))
+    // create delay from 5 seconds
+    await new Promise(resolve => setTimeout(resolve, 2000));    
+  }
+  actualScrap.value = 'Done'
+  console.log('Scraping Done')
   getRepos()
 }
 

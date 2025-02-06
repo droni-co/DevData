@@ -31,6 +31,7 @@
   </UiCard>
 </template>
 <script setup lang="ts">
+const loading = useState('loading', () => false)
 const props = defineProps({
   filters: {
     type: Object as PropType<any>,
@@ -51,6 +52,7 @@ const resourcesTableData = ref({
 
 
 const fetchQuery = async () => {
+  loading.value = true
   props.filters.report = 'errorsByDescription';
   const response = await $fetch('/api/analytics/query', {
     method: 'POST',
@@ -60,8 +62,10 @@ const fetchQuery = async () => {
   if(records.value.tables[0]) {
     tableData.value.data = records.value.tables[0].rows
   }
+  loading.value = false
 };
 const fetchResourcesByError = async (description:string) => {
+  loading.value = true
   props.filters.report = 'resourceByError';
   props.filters.description = description.trim();
   const response = await $fetch('/api/analytics/query', {
@@ -72,5 +76,6 @@ const fetchResourcesByError = async (description:string) => {
   if(records.value.tables[0]) {
     resourcesTableData.value.data = resourceRecords.value.tables[0].rows
   }
+  loading.value = false
 };
 </script>

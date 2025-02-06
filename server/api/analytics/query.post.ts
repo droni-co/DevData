@@ -6,7 +6,8 @@ export default defineEventHandler(async (event) => {
   const querys: { [key: string]: string } = {
     errorsByDescription: `AppServiceConsoleLogs
       | where Level == "Error"
-      | where strlen(trim(ResultDescription)) > 10
+      | extend descripcion = trim(" ", ResultDescription)
+      | where strlen(descripcion) > 10
       | summarize Count=count() by ResultDescription
       | project ResultDescription, Count
       | sort by Count desc
