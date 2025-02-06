@@ -1,11 +1,19 @@
 <template>
-  <button type="button" @click="fetchRepos" class="bg-white hover:bg-blue-100 text-blue-700 border-blue-700 border font-bold py-2 px-4 rounded">
-    <i class="mdi mdi-git"></i>
-    Fetch Repos
-  </button>
-  <UiFormInput v-model="filters.search" placeholder="Nombre" />
-  <UiFormSelect v-model="filters.projectId" :options="projectList" label="projectName" id="projectId" />
-  <UiFormInput v-model="filters.package" placeholder="package" />
+  <div class="flex py-2">
+    <button type="button" @click="fetchRepos" class="bg-white hover:bg-blue-100 text-blue-700 border-blue-700 border font-bold py-2 px-4 rounded">
+      Fetch
+    </button>
+    <h1 class="text-2xl font-bold grow py-2 px-2">Repositorios</h1>
+    <div class="flex">
+      <UiFormSelect v-model="filters.projectId" :options="projectList" itemLabel="projectName" itemValue="projectId" class="me-2" />
+      <UiFormInput v-model="filters.packageJson" placeholder="packageJson" class="me-2" />
+      <UiFormInput v-model="filters.pipeline" placeholder="pipeline" class="me-2" />
+      <button type="button" @click="getRepos" class="bg-white hover:bg-blue-100 text-blue-700 border-blue-700 border font-bold py-2 px-4 rounded-full">
+        <i class="mdi mdi-magnify"></i>
+      </button>
+    </div>
+  </div>
+  
   <UiTable
       :headers="[
         { label: 'Name', name: 'name' },
@@ -16,7 +24,6 @@
         { label: 'Is Exp', name: 'isExp' },
         { label: 'package', name: 'package' },
         { label: 'pipeline', name: 'pipeline' },
-        { label: 'appService', name: 'appService' },
         { label: 'Actions', name: 'actions', classes: 'w-12'}
       ]"
       :data="repos ?? []"
@@ -46,12 +53,12 @@
   </UiTable>
 </template>
 <script setup lang="ts">
+const loading = useState('loading', () => false)
 const repos = ref<any>([])
 const filters = ref({
-  search: '',
   projectId: '',
-  package: '',
-  isExp: 'true'
+  packageJson: '',
+  pipeline: ''
 })
 const projectList = ref<any>([])
 
@@ -61,9 +68,11 @@ const getProjects = async () => {
 }
 
 const getRepos = async () => {
+  loading.value = true
   const queryParam = new URLSearchParams(filters.value).toString()
   const data = await $fetch('/api/db/repos?' + queryParam)
   repos.value = data
+  loading.value = false
 }
 getRepos()
 getProjects()

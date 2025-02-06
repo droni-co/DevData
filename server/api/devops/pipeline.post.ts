@@ -7,8 +7,9 @@ export default defineEventHandler(async (event) => {
   
   const gitApi = await (await AzureApiService.connection()).getGitApi()
   const file = await gitApi.getItemContent(id, 'azure-pipelines.yml')
-  const confirm = await file.on('data', async (content) => {
-    const fileContent = await content.toString()
+  const confirm = file.on('data', async (content) => {
+    let fullData = ''
+    fullData += await content.toString()
 
     const prisma = new PrismaClient()
     const repo = await prisma.repo.update({
@@ -16,7 +17,7 @@ export default defineEventHandler(async (event) => {
         id: id
       },
       data: {
-        pipeline: fileContent,
+        pipeline: fullData,
         updatedAt: new Date()
       }
     })

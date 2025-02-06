@@ -20,8 +20,8 @@ model Repo {
   defaultBranch String?
   isApi         Boolean?  @default(false)
   isExp         Boolean?  @default(false)
-  package       Json?
-  pipeline      Json?
+  package       String?   @db.Text
+  pipeline      String?   @db.Text
   appservice    String?
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @default(now())

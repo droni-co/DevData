@@ -40,6 +40,7 @@
 </template>
 <script setup lang="ts">
   import { DateTime } from 'luxon';
+  const loading = useState('loading', () => false);
   const records:Ref<any> = ref([]);
   const filters = ref({
     fromDate: DateTime.now().plus({ days: -1 }).toISODate(),
@@ -54,6 +55,7 @@
   });
     
   const fetchQuery = async () => {
+    loading.value = true;
     const response = await $fetch('/api/analytics/query', {
       method: 'POST',
       body: filters.value
@@ -68,5 +70,6 @@
       });
       tableData.value.data = records.value.tables[0].rows
     }
+    loading.value = false;
   };
 </script>
