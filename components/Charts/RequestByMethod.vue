@@ -1,7 +1,7 @@
 <template>
   <UiCard>
     <div class="flex">
-      <h3 class="text-lg font-bold grow">Solicitudes por método</h3>
+      <h3 class="text-lg font-bold grow">Solicitudes HTTP por método</h3>
       <button type="button" @click="activeTab = 'table'" class="bg-white hover:bg-slate-100 text-slate-700 border-slate-700 border py-1 px-3 rounded-l">
         <i class="mdi mdi-table"></i>
         Tabla
@@ -60,8 +60,8 @@ const fetchQuery = async () => {
   });
   records.value = response
   if(records.value.tables[0]) {
-    chartLabels.value = records.value.tables[0].columns.map((header: any) => header['name']);
-    chartData.value = records.value.tables[0].rows[0];
+    chartLabels.value = records.value.tables[0].rows.map((row: any) => row[0]);
+    chartData.value = records.value.tables[0].rows.map((row: any) => row[1]);
     tableData.value.headers = records.value.tables[0].columns.map((header: any, index:number) => {
       return {
         label: header.name,

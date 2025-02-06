@@ -1,7 +1,7 @@
 <template>
   <UiCard>
     <div class="flex">
-      <h3 class="text-lg font-bold grow">Solicitudes por endpoint</h3>
+      <h3 class="text-lg font-bold grow">Solicitudes HTTP por endpoint</h3>
       <button type="button" @click="fetchQuery" class="bg-white hover:bg-blue-100 text-blue-700 border-blue-700 border font-bold py-1 px-3 rounded">
         <i class="mdi mdi-refresh"></i>
         sync

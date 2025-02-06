@@ -10,47 +10,23 @@ export default defineEventHandler(async (event) => {
       | project ResultDescription, Count
       | sort by Count desc
     `,
-    requestByMethod: `AppServiceConsoleLogs
-      | where ResultDescription !startswith "GET /ping"
-      | summarize 
-        GET = countif(ResultDescription startswith "GET"),
-        POST = countif(ResultDescription startswith "POST"),
-        PUT = countif(ResultDescription startswith "PUT"),
-        PATCH = countif(ResultDescription startswith "PATCH"),
-        DELETE = countif(ResultDescription startswith "DELETE"),
-        OPTIONS = countif(ResultDescription startswith "OPTIONS")
-      | project GET, POST, PUT, PATCH, DELETE, OPTIONS
+    requestByMethod: `AppServiceHTTPLogs
+      | summarize Count = count() by CsMethod
+      | project CsMethod, Count
     `,
-    requestByEndpoint: `AppServiceConsoleLogs
-      | where ResultDescription !startswith "GET /ping"
-      | where ResultDescription !startswith "GET / "
-      | where ResultDescription startswith "GET /"
-              or ResultDescription startswith "POST /"
-              or ResultDescription startswith "PUT /"
-              or ResultDescription startswith "PATHC /"
-              or ResultDescription startswith "DELETE /"
-              or ResultDescription startswith "OPTIONS /"
-      | extend Endpoint = tostring(split(ResultDescription, " ")[1])
+    requestByEndpoint: `AppServiceHTTPLogs
+      | where CsUriStem != '/' and CsUriStem != '/ping'
       | extend AppService = tostring(split(_ResourceId, "/")[8])
+      | extend Endpoint = CsUriStem
       | summarize Count=count() by Endpoint, AppService
       | project Endpoint, AppService, Count
-      | sort by Count desc 
+      | sort by Count desc
     `,
-    errorsByType: `AppServiceConsoleLogs
-      | where Level == "Error"
-      | summarize 
-          e500 = countif(ResultDescription contains " 500"),
-          e501 = countif(ResultDescription contains " 501"),
-          e502 = countif(ResultDescription contains " 502"),
-          e503 = countif(ResultDescription contains " 503"),
-          e504 = countif(ResultDescription contains " 504"),
-          e505 = countif(ResultDescription contains " 505"),
-          e400 = countif(ResultDescription contains " 400"),
-          e401 = countif(ResultDescription contains " 401"),
-          e402 = countif(ResultDescription contains " 402"),
-          e403 = countif(ResultDescription contains " 403"),
-          e404 = countif(ResultDescription contains " 404")
-      | project e500, e501, e502, e503, e504, e505, e400, e401, e402, e403, e404
+    errorsByType: `AppServiceHTTPLogs
+      | where ScStatus >= 300
+      | summarize Count = count() by ScStatus
+      | project ScStatus, Count
+      | order by Count desc
     `,
     errorsByResource: `AppServiceConsoleLogs
       | where Level == "Error"
@@ -62,8 +38,9 @@ export default defineEventHandler(async (event) => {
     resourceByError: `AppServiceConsoleLogs
       | where Level == "Error"
       | where ResultDescription contains "${description}"
-      | summarize Count=count() by _ResourceId
-      | project _ResourceId, Count
+      | extend AppService = tostring(split(_ResourceId, "/")[8])
+      | summarize Count=count() by AppService
+      | project AppService, Count
       | sort by Count desc
     `,
     allLogs: `AppServiceConsoleLogs
@@ -75,13 +52,35 @@ export default defineEventHandler(async (event) => {
         or ResultDescription startswith "DELETE"
         or ResultDescription startswith "OPTIONS"
         or Level == "Error"
-    | project TimeGenerated, Level, ResultDescription, _ResourceId`
+    | project TimeGenerated, Level, ResultDescription, _ResourceId`,
+    sessionsByOsBrowser: `SigninLogs
+      | extend Os = tostring(DeviceDetail.operatingSystem)
+      | extend Browser = tostring(DeviceDetail.browser)
+      | summarize Count = count() by Os, Browser
+      | project Os, Browser, Count
+      | sort by Count desc
+    `,
+    sessionsByHour: `SigninLogs
+      | extend HoraLocal = datetime_utc_to_local(TimeGenerated, "America/Bogota")
+      | extend Hora = datetime_part("hour", HoraLocal)
+      | summarize Count = count() by Hora
+      | project Hora, Count
+      | sort by Hora asc`,
+    sessionsByWeekday: `SigninLogs
+      | extend HoraLocal = datetime_utc_to_local(TimeGenerated, "America/Bogota")
+      | extend down = dayofweek(HoraLocal)
+      | extend Dia = toint(down/1d) 
+      | summarize Count = count() by Dia
+      | project Dia, Count
+      | sort by Dia asc
+    `,
   }
 
   try {
     const logsClient = await AzureQueryService.logsClient()
     const workspaceId = String(process.env.WORKSPACE_ID)
     const query = querys[report] ?? ''
+    console.log('Query:', query)
     const records = await logsClient.queryWorkspace(workspaceId, query, {
       startTime: new Date(Date.parse(fromDate)),
       endTime: new Date(Date.parse(toDate))

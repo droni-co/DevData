@@ -10,7 +10,10 @@
           { id: 'errorsByResource' , name: 'Error by Resource' },
           { id: 'errorsByDescription', name: 'Error by Description' },
           { id: 'resourceByError', name: 'Resource by error' },
-          { id: 'requestByEndpoint', name: 'Requests By Endpoint' }
+          { id: 'requestByEndpoint', name: 'Requests By Endpoint' },
+          { id: 'sessionsByOsBrowser', name: 'Sessions by OS/Browser' },
+          { id: 'sessionsByHour', name: 'Session by Hour' },
+          { id: 'sessionsByWeekday', name: 'Session by Weekday' }
         ]" />
         <UiFormInput class="me-2" type="date" v-model="filters.fromDate" />
         <UiFormInput class="me-2" type="date" v-model="filters.toDate"  />
@@ -25,7 +28,11 @@
     <ChartsRequestByEndpoint class="col-span-3" :filters="filters" />
     <ChartsErrorByType class="col-span-2" :filters="filters" />
     <ChartsErrorByResource class="col-span-3" :filters="filters" />
+    <ChartsErrorByDescription class="col-span-5" :filters="filters" />
   </div>
+
+
+  <h1 class="text-2xl font-bold grow">{{ filters.report }}</h1>
   <UiTable 
     :headers="tableData.headers"
     :data="tableData.data">

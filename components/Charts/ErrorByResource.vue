@@ -1,7 +1,7 @@
 <template>
   <UiCard>
     <div class="flex">
-      <h3 class="text-lg font-bold grow text-rose-800">Errores por recurso</h3>
+      <h3 class="text-lg font-bold grow text-rose-800">Errores de consola por recurso</h3>
       <button type="button" @click="activeTab = 'table'" class="bg-white hover:bg-slate-100 text-slate-700 border-slate-700 border py-1 px-3 rounded-l">
         <i class="mdi mdi-table"></i>
         Tabla
